@@ -32,7 +32,7 @@ def test_default_branch_name(repo):
 def test_require_status_checks(repo):
     if 'required_status_checks' not in repo['protections']:
         logger.error('{} has no required status checks', repo['name'])
-        return 2
+        return 1
     if not repo['protections']['required_status_checks']['strict']:
         logger.error('{} does not strictly require checks', repo['name'])
         return 1
@@ -40,6 +40,9 @@ def test_require_status_checks(repo):
 
 @rule
 def test_require_pull_request_reviews(repo):
+    if 'required_pull_request_reviews' not in repo['protections']:
+        logger.error('{} has no required pull request review rules for code owners')
+        return 1
     if not repo['protections']['required_pull_request_reviews']['require_code_owner_reviews']:
         logger.error('{} does not require code owner reviews', repo['name'])
         return 1
@@ -47,6 +50,9 @@ def test_require_pull_request_reviews(repo):
 
 @rule
 def test_dismiss_stale_reviews(repo):
+    if 'required_pull_request_reviews' not in repo['protections']:
+        logger.error('{} has no required pull request review rules for staleness')
+        return 1
     if not repo['protections']['required_pull_request_reviews']['dismiss_stale_reviews']:
         logger.error('{} does not dismiss stale reviews', repo['name'])
         return 1

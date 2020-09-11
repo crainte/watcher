@@ -1,6 +1,3 @@
-from loguru import logger
-
-
 # silly decorator to count all rules dynamically
 class rule(object):
 
