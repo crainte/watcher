@@ -1,7 +1,5 @@
 from loguru import logger
 
-import json
-
 
 # silly decorator to count all rules dynamically
 class rule(object):
