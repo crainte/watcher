@@ -1,6 +1,5 @@
 #!/usr/bin/env python -B
 from watcher.github import organization
-from watcher.config import cfg
 from watcher.curtain import analyze, rule
 from loguru import logger
 

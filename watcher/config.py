@@ -19,6 +19,8 @@ github_opts = [
                 help='Organization to scan'),
     cfg.BoolOpt('paginate', default=False,
                 help='Paginate responses'),
+    cfg.BoolOpt('deep_branch', default=False,
+               help='Enable deep branch population'),
 ]
 
 audit_group = cfg.OptGroup('audit', title='Audit Rules',
@@ -31,6 +33,10 @@ audit_opts = [
                 help='If default_branch Check is an Error or Warning'),
     cfg.IntOpt('max_branches', default=10,
                help='Maximum Number of Branches'),
+    cfg.IntOpt('days_stale', default=30,
+               help='Days until considered stale'),
+    cfg.BoolOpt('enforce_admin', default=False,
+               help='If the enforce administrator is an Error or Warning'),
 ]
 
 CONF = cfg.CONF

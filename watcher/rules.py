@@ -85,3 +85,18 @@ def test_allow_deletions(repo):
         logger.error('{} allows deletions', repo['name'])
         return 1
     logger.success('{} does not allow deletions', repo['name'])
+
+@rule
+def test_stale_branches(repo):
+    # if not using deep inspection
+    if not CONF.github.deep_branch: return 0
+    from datetime import datetime
+    now = datetime.now()
+    for b in repo['branches']:
+        commit = datetime.strptime(repo['branches'][b]['commit']['commit']['committer']['date'], '%Y-%m-%dT%H:%M:%SZ')
+        since = now - commit
+        if since.days > CONF.audit.days_stale:
+            logger.error('{} branch {} is {} days old', repo['name'], b, since.days)
+            return 1
+        else:
+            logger.success('{} branch {} is {} days old', repo['name'], b, since.days)

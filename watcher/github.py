@@ -9,6 +9,7 @@ CONF = cfg.CONF
 class Organization():
 
     active = {}
+    branches = {}
     error = {}
     archived = {}
     protected = {}
@@ -60,7 +61,25 @@ class Organization():
                 self.error[full_name] = self.active[full_name]
                 self.error[full_name]['protections'] = protections
                 del self.active[full_name]
-            # TODO allow deep branch inspection for stale branches
+                continue
+
+            # allow deep branch population
+            if CONF.github.deep_branch: self._deep_branch(full_name)
+
+    def _deep_branch(self, full_name):
+        self.branches[full_name] = {}
+        logger.debug('Deep scanning branches for {}', full_name)
+        for b in self.active[full_name]['branches']:
+            try:
+                status, branch = self.client.repos[full_name].branches[b['name']].get()
+                self._validateCall('branch %s' % b['name'], status, branch)
+            except:
+                logger.error('Unable to inspect repo: %s branch: %s' % (full_name, b['name']))
+                continue
+            self.branches[full_name][b['name']] = branch
+        # overwrite simple branch list
+        self.active[full_name]['branches'] = self.branches[full_name]
+
 
 
 organization = Organization()
