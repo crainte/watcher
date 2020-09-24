@@ -8,7 +8,7 @@ def main():
     logger.info("Who watches the watcher?")
     analyze(organization)
     # Turn grade into percentage
-    grade = int(round( ( (rule.count - rule.grade - len(organization.error))/rule.count ) * 100))
+    grade = max( int(round(((rule.count - rule.grade - len(organization.error))/max(rule.count, 1)) * 100)), 0)
 
     if grade >= 80:
         logger.success('You have a passing grade: {}%', grade)
