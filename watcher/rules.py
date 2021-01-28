@@ -148,3 +148,14 @@ def test_stale_branches(repo):
                 logger.warning('{} branch {} is {} days old', repo['name'], b, since.days)
                 return
         logger.success('{} branch {} is {} days old', repo['name'], b, since.days)
+
+@rule(not CONF.github.deep_repo)
+def test_delete_head(repo):
+    if not repo['delete_branch_on_merge']:
+        if CONF.enforce.delete_branch_on_merge:
+            logger.error('{} does not delete HEAD branch on merge', repo['name'])
+            return 1
+        else:
+            logger.warning('{} does not delete HEAD branch on merge', repo['name'])
+            return
+    logger.success('{} deletes HEAD branch on merge', repo['name'])

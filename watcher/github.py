@@ -36,10 +36,16 @@ class Organization():
             full_name = repo['full_name']
             default_branch = repo['default_branch']
 
+            # allow deep repo population
+            if CONF.github.deep_repo:
+                logger.debug('Deep scanning repository {}', full_name)
+                status, repo = self.client.repos[full_name].get()
+
             if repo['archived']:
                 self.archived[full_name] = repo
                 logger.debug('{} is archived', full_name)
                 continue
+
             # start loading datasource
             self.active[full_name] = repo
             logger.debug('Requesting branches for repo: {}', full_name)

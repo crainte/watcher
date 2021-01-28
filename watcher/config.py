@@ -19,6 +19,8 @@ github_opts = [
                help='Paginate responses'),
     cfg.BoolOpt('deep_branch', default=False,
                help='Enable deep branch population'),
+    cfg.BoolOpt('deep_repo', default=False,
+               help='Enable deep repo population'),
 ]
 
 audit_group = cfg.OptGroup('audit', title='Audit Settings',
@@ -61,6 +63,8 @@ enforce_opts = [
                help='Enforce force push rules'),
     cfg.BoolOpt('delete', default=False,
                help='Enforce deletion rules'),
+    cfg.BoolOpt('delete_branch_on_merge', default=False,
+               help='Enforce delete branch on merge'),
 ]
 
 CONF = cfg.CONF
